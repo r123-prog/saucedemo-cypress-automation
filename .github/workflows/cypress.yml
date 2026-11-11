@@ -18,6 +18,9 @@ jobs:
       fail-fast: false
       matrix:
         browser: [chrome, firefox]
+    env:
+      # Firefox's content sandbox cannot create user namespaces on some hosted runners.
+      MOZ_DISABLE_CONTENT_SANDBOX: "1"
 
     steps:
       - name: Checkout
