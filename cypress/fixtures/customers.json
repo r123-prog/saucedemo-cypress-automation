@@ -1,0 +1,6 @@
+{
+  "valid": { "firstName": "Rwnaa", "lastName": "Tester", "postalCode": "11511" },
+  "missingFirstName": { "firstName": "", "lastName": "Tester", "postalCode": "11511" },
+  "missingLastName": { "firstName": "Rwnaa", "lastName": "", "postalCode": "11511" },
+  "missingPostalCode": { "firstName": "Rwnaa", "lastName": "Tester", "postalCode": "" }
+}

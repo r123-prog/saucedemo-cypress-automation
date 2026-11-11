@@ -1,0 +1,4 @@
+{
+  "invalidUsername": { "username": "not_a_real_user", "password": "secret_sauce" },
+  "invalidPassword": { "username": "standard_user", "password": "wrong_password" }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "saucedemo-cypress-automation",
+  "version": "1.0.0",
+  "description": "End-to-end web test automation framework (Cypress + JavaScript) for the Sauce Demo e-commerce application.",
+  "private": true,
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test": "cypress run",
+    "test:chrome": "cypress run --browser chrome",
+    "test:firefox": "cypress run --browser firefox",
+    "test:edge": "cypress run --browser edge",
+    "test:headed": "cypress run --headed --browser chrome",
+    "test:auth": "cypress run --spec \"cypress/e2e/auth/**/*.cy.js\"",
+    "test:products": "cypress run --spec \"cypress/e2e/products/**/*.cy.js\"",
+    "test:cart": "cypress run --spec \"cypress/e2e/cart/**/*.cy.js\"",
+    "test:checkout": "cypress run --spec \"cypress/e2e/checkout/**/*.cy.js\"",
+    "test:network": "cypress run --spec \"cypress/e2e/network/**/*.cy.js\"",
+    "clean": "node -e \"['cypress/reports','cypress/screenshots','cypress/videos'].forEach(d=>require('fs').rmSync(d,{recursive:true,force:true}))\"",
+    "report:summary": "node scripts/report-summary.js"
+  },
+  "devDependencies": {
+    "cypress": "^13.17.0",
+    "cypress-mochawesome-reporter": "^3.8.2"
+  }
+}
