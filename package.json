@@ -22,7 +22,7 @@
     "report:summary": "node scripts/report-summary.js"
   },
   "devDependencies": {
-    "cypress": "^13.17.0",
+    "cypress": "14.5.4",
     "cypress-mochawesome-reporter": "^3.8.2"
   }
 }
