@@ -1,3 +1,4 @@
+
 const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
@@ -7,7 +8,10 @@ module.exports = defineConfig({
   viewportWidth: 1280,
   viewportHeight: 720,
   defaultCommandTimeout: 8000,
-  retries: { runMode: 1, openMode: 0 },
+  retries: {
+    runMode: 1,
+    openMode: 0,
+  },
 
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
@@ -17,21 +21,20 @@ module.exports = defineConfig({
     embeddedScreenshots: true,
     inlineAssets: true,
     saveAllAttempts: false,
+    saveJson: true,
   },
 
   e2e: {
-    // Override with CYPRESS_BASE_URL if needed.
     baseUrl: 'https://www.saucedemo.com',
     specPattern: 'cypress/e2e/**/*.cy.js',
     supportFile: 'cypress/support/e2e.js',
+
     setupNodeEvents(on, config) {
       require('cypress-mochawesome-reporter/plugin')(on);
       return config;
     },
   },
 
-  // These are the OFFICIAL PUBLIC demo credentials published on saucedemo.com.
-  // Override any of them with CYPRESS_<name> environment variables.
   env: {
     standardUser: 'standard_user',
     lockedOutUser: 'locked_out_user',
