@@ -1,44 +1,85 @@
-# Sauce Demo – Cypress Test Automation Framework
+# SauceDemo E2E Test Automation
 
-An end-to-end web test automation framework built with **Cypress, JavaScript, and Node.js** against the public Sauce Demo e-commerce application.
+[![Cypress E2E Tests](https://github.com/r123-prog/saucedemo-cypress-automation/actions/workflows/cypress.yml/badge.svg?branch=main)](https://github.com/r123-prog/saucedemo-cypress-automation/actions/workflows/cypress.yml)
 
-The framework is designed to validate critical user journeys, including authentication, product browsing, shopping cart operations, and checkout workflows. It includes positive and negative testing scenarios, automated reporting, and Continuous Integration through GitHub Actions.
+An end-to-end (E2E) test automation project for the [SauceDemo](https://www.saucedemo.com/) e-commerce demo application, built with **Cypress 14.5.4, JavaScript, and Node.js**.
 
----
+The framework covers key shopping journeys—authentication, product catalogue, cart, checkout, and selected network scenarios—and runs automatically in **Google Chrome and Mozilla Firefox** through GitHub Actions.
 
-## Business Objective
+## Project Highlights
 
-An online store can lose revenue when essential features such as login, shopping cart, or checkout stop working.
+- Automated UI testing with Cypress and JavaScript.
+- Page Object Model with reusable page classes.
+- Reusable custom Cypress commands, selectors, and fixture-based test data.
+- Cross-browser execution on Chrome and Firefox in CI.
+- Mochawesome HTML and JSON test reporting.
+- GitHub Actions workflow with downloadable reports and execution videos.
+- Failure screenshots uploaded when a CI job fails.
 
-This automation framework validates critical e-commerce workflows to detect regressions early and improve application reliability before issues reach end users.
+## Tech Stack
 
----
-
-## Technologies
-
-| Area | Technology |
+| Category | Tools |
 |---|---|
-| Test Automation | Cypress 13 |
-| Programming Language | JavaScript |
-| Runtime Environment | Node.js 18+ |
-| Package Manager | npm |
-| Design Approach | Page Object Model, Custom Commands, Fixtures |
-| Test Reporting | cypress-mochawesome-reporter |
+| Language | JavaScript |
+| Runtime | Node.js 20 in CI (project requires Node.js 18+) |
+| Test Automation | Cypress 14.5.4 |
+| Test Reporter | cypress-mochawesome-reporter |
+| Browsers in CI | Google Chrome, Mozilla Firefox |
 | CI/CD | GitHub Actions |
-| Browsers | Google Chrome, Mozilla Firefox, Microsoft Edge (local execution) |
-| Version Control | Git & GitHub |
+| Version Control | Git, GitHub |
 
----
+## Test Coverage
 
-## Project Architecture
+The current E2E suite contains **34 test cases** across five areas.
+
+| Area | Coverage | Test IDs |
+|---|---|---|
+| Authentication | Valid and invalid login, required fields, locked-out user | AUTH-001–AUTH-007 |
+| Product Catalogue | Product details, sorting, add/remove products | PROD-001–PROD-009 |
+| Shopping Cart | Cart contents, quantities, remove item, navigation and persistence | CART-001–CART-007 |
+| Checkout | Successful order, totals, required fields, cancel flow, cart reset | CHK-001–CHK-008 |
+| Network | Product asset requests, failed image requests, telemetry failure handling | NET-001–NET-003 |
+
+### Key Scenarios
+
+**Authentication**
+- Sign in with valid credentials.
+- Reject invalid username and password combinations.
+- Validate empty and missing login fields.
+- Prevent login for a locked-out user.
+
+**Product Catalogue**
+- Verify product names, prices, descriptions, images, and add-to-cart controls.
+- Open and verify product details.
+- Sort products by name and price in both directions.
+- Add one or multiple products to the cart and remove products.
+
+**Shopping Cart**
+- Verify selected products and quantities.
+- Remove an item and verify the remaining cart contents.
+- Continue shopping while preserving cart contents.
+- Verify cart persistence after reload and navigation.
+- Verify the empty-cart state.
+
+**Checkout**
+- Complete an order and verify the confirmation.
+- Validate item subtotal, tax, and final total.
+- Verify required first name, last name, and postal code.
+- Cancel checkout and return to the cart.
+- Verify the cart is empty after a successful order.
+
+**Network**
+- Observe product asset requests and verify images load.
+- Stub product image requests with HTTP 404 responses and verify the catalogue remains usable.
+- Simulate a third-party telemetry failure and verify the main login flow remains usable.
+
+## Project Structure
 
 ```text
 saucedemo-cypress-automation/
-│
 ├── .github/
 │   └── workflows/
 │       └── cypress.yml
-│
 ├── cypress/
 │   ├── e2e/
 │   │   ├── auth/
@@ -46,109 +87,82 @@ saucedemo-cypress-automation/
 │   │   ├── cart/
 │   │   ├── checkout/
 │   │   └── network/
-│   │
 │   ├── fixtures/
 │   ├── pages/
 │   ├── support/
-│   │
 │   ├── reports/
 │   ├── screenshots/
 │   └── videos/
-│
 ├── scripts/
 │   └── report-summary.js
-│
 ├── cypress.config.js
 ├── package.json
 ├── package-lock.json
-├── .nvmrc
 └── README.md
 ```
 
-### Design Decisions
+- **e2e/** contains the Cypress test specifications grouped by feature.
+- **fixtures/** stores reusable test data.
+- **pages/** contains page objects and page-level actions/assertions.
+- **support/** contains shared Cypress support code, selectors, and utilities.
+- **scripts/report-summary.js** creates a Markdown summary from Mochawesome JSON results.
 
-- **Page Object Model (POM):** Separates page interactions from test scenarios to improve maintainability.
-- **Centralized Selectors:** Keeps element selectors organized and reusable.
-- **Custom Commands:** Provides reusable Cypress commands for common actions.
-- **Test Fixtures:** Separates test data from test logic.
-- **Test Case Identification:** Uses unique test IDs to improve traceability between requirements and execution results.
+## Getting Started
 
----
+### Prerequisites
 
-## Prerequisites
-
-Make sure the following tools are installed:
-
-- Node.js 18 or newer (the project uses Node.js 20 through `.nvmrc`).
+- Node.js 18 or newer.
 - npm.
 - Git.
-- Google Chrome, Mozilla Firefox, or Microsoft Edge for the corresponding local browser runs.
-
-Cypress also includes Electron for its default headless execution.
-
----
-
-## Installation
+- Google Chrome and/or Mozilla Firefox for local cross-browser runs.
 
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
-```
-
-### 2. Navigate to the project directory
-
-```bash
+git clone https://github.com/r123-prog/saucedemo-cypress-automation.git
 cd saucedemo-cypress-automation
 ```
 
-### 3. Install dependencies
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-For reproducible installations in CI environments, the generated `package-lock.json` should be committed to the repository.
+## Run Tests
 
----
-
-## Running the Tests
-
-### Interactive Test Runner
+### Open Cypress Test Runner
 
 ```bash
 npm run cy:open
 ```
 
-### Headless Execution
-
-Run all test suites using the default browser:
+### Run the complete suite headlessly
 
 ```bash
 npm test
 ```
 
-### Cross-Browser Testing
-
-Run tests on specific browsers:
+### Run in a specific browser
 
 ```bash
 npm run test:chrome
 npm run test:firefox
+```
+
+The project also defines an Edge script for local use:
+
+```bash
 npm run test:edge
 ```
 
-### Headed Execution
-
-Run tests with a visible Chrome browser:
+### Run with a visible Chrome browser
 
 ```bash
 npm run test:headed
 ```
 
-### Run Specific Test Suites
-
-Execute individual testing areas:
+### Run a specific feature suite
 
 ```bash
 npm run test:auth
@@ -158,268 +172,100 @@ npm run test:checkout
 npm run test:network
 ```
 
-### Clean Generated Files
-
-Remove previous reports, screenshots, and videos:
+### Clean generated test assets
 
 ```bash
 npm run clean
 ```
 
----
+## Test Data and Configuration
 
-## Environment Configuration
-
-The application URL and test credentials can be overridden using Cypress environment variables.
-
-Default application URL:
+The Cypress configuration uses the SauceDemo application URL:
 
 ```text
 https://www.saucedemo.com
 ```
 
-Example:
+Demo credentials are configured as Cypress environment values:
 
-```bash
-CYPRESS_BASE_URL=https://www.saucedemo.com npm test
-```
-
-The Cypress configuration also defines the following default demo credentials:
-
-| User Type | Username | Password |
+| User | Username | Password |
 |---|---|---|
-| Standard User | standard_user | secret_sauce |
-| Locked Out User | locked_out_user | secret_sauce |
+| Standard user | `standard_user` | `secret_sauce` |
+| Locked-out user | `locked_out_user` | `secret_sauce` |
 
-These are public demo credentials provided by Sauce Demo.
+These are public test credentials for the SauceDemo demo application. Do not use real or personal credentials in test fixtures or source control.
 
----
+## Reporting and Test Evidence
 
-## Test Scenarios
+The project uses **cypress-mochawesome-reporter** to generate HTML and JSON reports.
 
-The framework covers the following major testing areas:
-
-### 1. Authentication Testing
-
-- Valid login.
-- Invalid username.
-- Invalid password.
-- Empty login fields.
-- Missing username.
-- Missing password.
-- Locked-out user validation.
-- Logout functionality.
-- Re-login after logout.
-- Session persistence after page reload.
-- Protected page access without authentication.
-- Protected page access after logout.
-
-### 2. Product Catalogue Testing
-
-- Verify product listing.
-- Validate product names and prices.
-- Verify product images.
-- Validate product details.
-- Sort products alphabetically (A–Z).
-- Sort products in reverse alphabetical order (Z–A).
-- Sort products by price (Low to High).
-- Sort products by price (High to Low).
-- Add single or multiple products to the cart.
-- Remove products from the catalogue.
-
-### 3. Shopping Cart Testing
-
-- Verify cart contents.
-- Validate product quantities.
-- Remove products from the cart.
-- Continue shopping.
-- Verify cart persistence during navigation.
-- Verify cart behavior after page reload.
-- Validate empty cart behavior.
-
-### 4. Checkout Testing
-
-- Complete a successful checkout.
-- Verify order confirmation.
-- Validate item totals.
-- Verify tax calculations.
-- Verify final order total.
-- Validate required customer information.
-- Submit checkout with empty fields.
-- Cancel checkout and return to the cart.
-- Verify cart is emptied after successful order completion.
-
-### 5. Network Testing
-
-- Intercept image asset requests using `cy.intercept()`.
-- Verify application behavior when image requests fail.
-- Stub image requests with HTTP 404 responses.
-- Verify that third-party telemetry failures do not break core application functionality.
-
-*Note: Test scenarios listed above describe the intended coverage and should be kept in sync with the actual implemented test cases.*
-
----
-
-## Test Reporting
-
-The project uses **cypress-mochawesome-reporter** to generate detailed HTML test reports.
-
-The reporter is configured with:
-
-- HTML test reports.
-- Test execution statistics.
-- Passed and failed test cases.
-- Execution duration.
-- Embedded screenshots.
-- Report charts.
-
-### Report Location
+Generated report files are stored in:
 
 ```text
 cypress/reports/
 ```
 
-### Generate Markdown Execution Summary
+The report includes execution statistics and test details. The reporter is configured to include charts and embedded screenshots.
+
+Generate a Markdown execution summary with:
 
 ```bash
 npm run report:summary
 ```
 
-The custom reporting script:
+The summary script reads the generated Mochawesome JSON report, totals tests/passes/failures/pending tests and duration, lists failures when present, and appends the summary to the GitHub Actions job summary when running in CI.
 
-- Reads Mochawesome JSON reports.
-- Calculates total tests, passed tests, failures, pending tests, and duration.
-- Lists failed test cases.
-- Generates a Markdown summary.
-- Appends the summary to the GitHub Actions job summary when running in CI.
+### Screenshots and Videos
 
----
-
-## Screenshots and Videos
-
-Cypress is configured to capture screenshots and videos during test execution.
-
-| Artifact | Location |
+| Evidence | Location |
 |---|---|
-| Failure Screenshots | `cypress/screenshots/` |
-| Test Execution Videos | `cypress/videos/` |
-| HTML Reports | `cypress/reports/` |
+| HTML and JSON reports | `cypress/reports/` |
+| Failure screenshots | `cypress/screenshots/` |
+| Test run videos | `cypress/videos/` |
 
-Configuration:
+Cypress video recording and failure screenshots are enabled in the project configuration.
 
-- Screenshots are captured when tests fail.
-- Video recording is enabled.
-- Previous test assets are removed before each run.
+## Continuous Integration – GitHub Actions
 
----
+The workflow is defined in `.github/workflows/cypress.yml` and runs on:
 
-## CI/CD Pipeline – GitHub Actions
-
-The project integrates with **GitHub Actions** to automate test execution.
-
-The workflow is triggered automatically on:
-
-- Push events.
+- Pushes.
 - Pull requests.
-- Manual workflow dispatch.
+- Manual `workflow_dispatch` triggers.
 
-### Pipeline Workflow
+### Pipeline Steps
 
-1. Checks out the repository.
-2. Sets up Node.js 20.
-3. Installs dependencies.
-4. Executes Cypress E2E tests.
-5. Runs tests across Chrome and Firefox using a browser matrix.
-6. Generates a Markdown test execution summary.
-7. Uploads test reports as GitHub Actions artifacts.
-8. Uploads failure screenshots when tests fail.
-9. Uploads execution videos.
+1. Check out the repository.
+2. Set up Node.js 20.
+3. Install npm dependencies.
+4. Run the Cypress suite using a browser matrix.
+5. Execute Chrome and Firefox jobs independently.
+6. Publish the test summary to the GitHub Actions run.
+7. Upload report artifacts.
+8. Upload failure screenshots when a job fails.
+9. Upload test videos.
 
-### Browser Matrix
+The browser matrix uses `fail-fast: false`, so one browser job can finish even if the other fails.
 
-| Browser | Execution |
-|---|---|
-| Google Chrome | Automated CI execution |
-| Mozilla Firefox | Automated CI execution |
-| Microsoft Edge | Available for local execution |
+### Latest CI Results
 
-The workflow uses `cypress-io/github-action@v6` and runs browser jobs in parallel with `fail-fast: false`.
+See the [GitHub Actions workflow runs](https://github.com/r123-prog/saucedemo-cypress-automation/actions/workflows/cypress.yml) for the latest execution status and downloadable artifacts.
 
----
+Each successful browser job uploads its own report artifact. Download and extract the artifact to view the generated HTML report locally.
 
-## Known Application Limitations
+## Useful Links
 
-Sauce Demo is a public demo application with certain technical limitations that influence the test strategy.
-
-### 1. Deep-Link Navigation
-
-Deep links may return HTTP 404 responses because the application is served as a client-side single-page application.
-
-Therefore:
-
-- Tests navigate to the application through its root URL.
-- Login is performed through the UI.
-- Protected-route behavior is tested separately.
-- `failOnStatusCode: false` is used only where necessary to validate the expected deep-link behavior.
-
-### 2. Checkout Validation
-
-The application primarily checks whether required checkout fields are populated.
-
-It does not provide comprehensive validation for all possible input formats.
-
-Therefore, negative checkout scenarios focus on missing or empty required fields.
-
-### 3. API Testing Limitations
-
-The demo application does not expose a dedicated business REST API for the core purchase workflow.
-
-Network testing therefore focuses on intercepted asset requests and third-party traffic using Cypress `cy.intercept()`.
-
----
-
-## Execution Evidence
-
-Actual execution results should be recorded after running the test suite.
-
-Run:
-
-```bash
-npm install
-npm test
-npm run report:summary
-```
-
-Update the following table using the generated report:
-
-| Date | Browser | Total | Passed | Failed | Skipped |
-|---|---|---:|---:|---:|---:|
-| To be updated | Chrome | - | - | - | - |
-| To be updated | Firefox | - | - | - | - |
-
-Add a screenshot of the generated HTML report to demonstrate the actual test execution results.
-
----
-
-## Future Improvements
-
-- Expand test coverage for additional edge cases.
-- Integrate automated API testing when a suitable API is available.
-- Add visual regression testing.
-- Improve test data management.
-- Integrate test result notifications.
-- Extend CI browser coverage.
-
----
+- **Repository:** https://github.com/r123-prog/saucedemo-cypress-automation
+- **GitHub Actions:** https://github.com/r123-prog/saucedemo-cypress-automation/actions
+- **Application under test:** https://www.saucedemo.com/
 
 ## Author
 
-**Rwnaa Osama**
+**Rwnaa Osama**  
+Software Engineering Graduate | Software Testing & QA Automation
 
-Software Engineering Graduate | QA & Test Automation
-
-GitHub: https://github.com/r123-prog
+- GitHub: [@r123-prog](https://github.com/r123-prog)
 
 ---
 
-*Developed as a practical Software Testing and Test Automation project to demonstrate Cypress E2E automation, test design, reporting, and CI/CD integration.*
+*This project was developed to demonstrate practical skills in E2E test automation, test design, reusable test architecture, cross-browser testing, reporting, and CI/CD.*
